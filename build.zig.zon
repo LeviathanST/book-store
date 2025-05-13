@@ -1,0 +1,17 @@
+.{
+    .name = .book_store,
+    .version = "0.0.0",
+    .fingerprint = 0xf1954d0e52d421ec,
+    .minimum_zig_version = "0.15.0-dev.471+369177f0b",
+    .dependencies = .{
+        .httpz = .{
+            .url = "git+https://github.com/karlseguin/http.zig?ref=dev#c9c143c570cfd5e571ef26d4d8ae0fbda90d9431",
+            .hash = "httpz-0.0.0-PNVzrBG4BgB3JXUe_kj_sazfW3DqqnwarUQaxHYlm3tu",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}
