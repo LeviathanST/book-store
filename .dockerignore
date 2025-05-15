@@ -1,0 +1,6 @@
+.git
+.zig-cache
+sql
+zig-out
+compose.yml
+README.md
