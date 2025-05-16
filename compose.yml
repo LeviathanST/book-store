@@ -3,22 +3,27 @@ services:
     build:
       context: .
     environment:
-      PORT: 5005
+      PORT: ${PORT}
+      DB_PORT: ${DB_PORT}
+      DB_HOST: ${DB_HOST}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
     depends_on: 
       db:
         condition: service_started 
     ports:
-      - 5005:5005
+      - ${PORT}:${PORT}
     networks:
       - be
   db: 
     image: postgres:17.5-alpine3.21
     environment:
-      POSTGRES_DB: book-store
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - 5432:5432
+      - ${DB_PORT}:5432
     volumes:
       - data:/var/lib/postgresql/data
     networks:
