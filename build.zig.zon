@@ -13,12 +13,8 @@
             .hash = "pg-0.0.0-Wp_7gRD-BQCbDvJEahLsdoxUdlR7BsmvPnQyYdGyQzEE",
         },
         .zenv = .{
-            .url = "git+https://github.com/LeviathanST/zenv?ref=master#16b5fbe1467fe917ce59868e1083b09ddf79b5ab",
-            .hash = "zenv-0.0.0-hX4COU4DAABp8fXBt1bhQan5y2HI0FAsoxjMOQVUuwJ2",
-        },
-        .dotenv = .{
-            .url = "git+https://github.com/velikoss/dotenv-zig?ref=main#c2857caf4f9922321ad02f526dc11ab9bd27fd98",
-            .hash = "dotenv-0.1.1-MkB8yOIdAACFT19qGUM9twLe9eERhKPo5R_pB3Wro8lm",
+            .url = "git+https://github.com/zig-space/zenv?ref=master#d3bb3f0d63a45cbcdfe7402519a6728afc935659",
+            .hash = "zenv-0.0.0-hX4COWYeAAAv3S_azE1F_8eQUGRAIaK83DdtQGoLV0X_",
         },
     },
     .paths = .{

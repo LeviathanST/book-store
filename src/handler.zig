@@ -1,26 +1,31 @@
 const std = @import("std");
 const httpz = @import("httpz");
+const zenv = @import("zenv");
 const pg = @import("pg");
+const config = @import("config.zig");
 const Logger = @import("util.zig").Logger;
 const Self = @This();
 
 pool: *pg.Pool,
+env_reader: zenv.Reader,
 logger: Logger,
 
-pub fn init(allocator: std.mem.Allocator, logger: Logger) !Self {
+pub fn init(allocator: std.mem.Allocator, env_reader: zenv.Reader, logger: Logger) !Self {
+    const db_config = try env_reader.readStruct(config.Database);
     const pool = try pg.Pool.init(allocator, .{
         .auth = .{
-            .database = "book-store",
-            .username = "root",
-            .password = "root",
+            .database = db_config.db_database,
+            .username = db_config.db_username,
+            .password = db_config.db_password,
         },
         .connect = .{
-            .host = "db",
-            .port = 5432,
+            .host = db_config.db_host,
+            .port = db_config.db_port,
         },
     });
     return .{
         .pool = pool,
+        .env_reader = env_reader,
         .logger = logger,
     };
 }
