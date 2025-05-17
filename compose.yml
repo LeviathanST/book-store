@@ -11,7 +11,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
     depends_on: 
       db:
-        condition: service_started 
+        condition: service_healthy 
     ports:
       - ${PORT}:${PORT}
     networks:
@@ -25,7 +25,30 @@ services:
     ports:
       - ${DB_PORT}:5432
     volumes:
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/schema.sql
       - data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d ${DB_DATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - be
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PG_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PG_PASSWORD}
+      PGADMIN_LISTEN_ADDRESS: ${PG_LISTEN_ADDRESS}
+      PGADMIN_LISTEN_PORT: ${PG_LISTEN_PORT}
+    ports:
+      - ${PG_PORT}:80
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
     networks:
       - be
 
@@ -33,3 +56,5 @@ networks:
   be:
 volumes:
   data:
+  pgadmin-data:
+
