@@ -33,41 +33,44 @@ pub fn init(allocator: std.mem.Allocator, env_reader: zenv.Reader, logger: Logge
 pub fn deinit(self: Self) void {
     self.pool.deinit();
 }
-pub fn notFound(self: *Self, req: *httpz.Request, _: *httpz.Response) !void {
-    var start = std.time.Timer.start() catch unreachable;
-    self.logger.err("[{d}us] {s} - {s} 404 Not Found", .{
+pub fn notFound(self: *Self, req: *httpz.Request, res: *httpz.Response) !void {
+    var start = try std.time.Timer.start();
+    try self.logger.err("[{d}us] {s} - {s} 404 Not Found", .{
         start.lap() / 1000,
         @tagName(req.method),
         req.url.path,
-    }) catch unreachable;
+    });
+    res.status = 404;
 }
 
-pub fn uncaughtError(self: *Self, req: *httpz.Request, res: *httpz.Response, _: anyerror) void {
-    var start = std.time.Timer.start() catch unreachable;
-    inline for (@typeInfo(std.http.Status).@"enum".fields) |status| {
-        if (status.value == res.status) {
-            self.logger.err("[{d}us] {s} - {s} {d} {s}", .{
-                start.lap() / 1000,
-                @tagName(req.method),
-                req.url.path,
-                res.status,
-                status.name,
-            }) catch unreachable;
-        } else {
-            self.logger.err("[{d}us] {s} - {s} {d} {s}", .{
-                start.lap() / 1000,
-                @tagName(req.method),
-                req.url.path,
-                res.status,
-                "UNKNOW ERROR",
-            }) catch unreachable;
-        }
-    }
+// TODO: panic should be handled
+pub fn uncaughtError(self: *Self, req: *httpz.Request, res: *httpz.Response, err: anyerror) void {
+    var start = std.time.Timer.start() catch @panic("Time error");
+    self.logger.err("[{d}us] {s} - {s} 500 Internal Server Error", .{
+        start.lap() / 1000,
+        @tagName(req.method),
+        req.url.path,
+    }) catch @panic("Log error");
+    self.logger.err("error: {}", .{err}) catch @panic("Log error");
+    res.status = 500;
+    res.json(.{ .message = "Internal Server Error" }, .{}) catch @panic("Response json error");
 }
 
 pub fn dispatch(self: *Self, action: httpz.Action(*Self), req: *httpz.Request, res: *httpz.Response) !void {
     var start = try std.time.Timer.start();
-    try action(self, req, res);
+    action(self, req, res) catch |err| {
+        if (res.status == 200) { // catch unhandled error
+            self.uncaughtError(req, res, err);
+            return;
+        }
+        self.logger.err("[{d}us] {s} - {s} {d}", .{
+            start.lap() / 1000,
+            @tagName(req.method),
+            req.url.path,
+            res.status,
+        }) catch @panic("Log error");
+        return;
+    };
     try self.logger.info("[{d}us] {s} - {s} 200 OK", .{
         start.lap() / 1000,
         @tagName(req.method),
