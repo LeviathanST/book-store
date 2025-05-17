@@ -1,0 +1,11 @@
+@host=localhost
+@port=5005
+
+### Register success
+POST http://{{host}}:{{port}}/register HTTP/1.0
+Content-Type: application/json
+
+{
+    "email":"hehe",
+    "password":"hehe"
+}
