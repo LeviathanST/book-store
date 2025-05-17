@@ -1,0 +1,8 @@
+@host=localhost
+@port=5005
+
+### Ping
+GET http://{{host}}:{{port}}/ HTTP/1.1
+
+### Not found
+GET http://{{host}}:{{port}}/api HTTP/1.1

@@ -1,5 +1,6 @@
 const std = @import("std");
 const httpz = @import("httpz");
+const zenv = @import("zenv");
 
 const router = @import("router.zig");
 const util = @import("util.zig");
@@ -12,23 +13,20 @@ pub fn main() !void {
     const logger = util.Logger.init(std.io.getStdOut().writer());
     const allocator, const is_debug = comptime switch (@import("builtin").mode) {
         .Debug, .ReleaseFast => .{ debug_allocator.allocator(), true },
-        else => .{ arena.allocator(), false },
+        else => .{ std.heap.page_allocator, false },
     };
     defer if (is_debug) {
         const leaked = debug_allocator.deinit();
         if (leaked == .leak) {
             std.log.debug("Memory leak is detected", .{});
         }
-    } else {
-        arena.deinit();
     };
-    const port_env = try std.process.getEnvVarOwned(allocator, "PORT");
-    defer allocator.free(port_env); // Free by debug allocator, do nothing in release mode
-    const port = try std.fmt.parseInt(u16, port_env, 10);
-
-    var handler: Handler = try .init(allocator, logger);
+    const env_reader = try zenv.Reader.init(allocator, .TERM, .{});
+    defer env_reader.deinit();
+    var handler: Handler = try .init(allocator, env_reader, logger);
     defer handler.deinit();
 
+    const port = try env_reader.readKey(u16, "PORT") orelse 3000;
     var server = try httpz.Server(*Handler).init(allocator, .{
         .address = "0.0.0.0",
         .port = port,

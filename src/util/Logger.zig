@@ -1,3 +1,4 @@
+// TODO: remove io error from stdout, use another approach for logging
 const std = @import("std");
 const Self = @This();
 
