@@ -4,7 +4,7 @@ const zenv = @import("zenv");
 
 const router = @import("router.zig");
 const util = @import("util.zig");
-const Handler = @import("handler.zig");
+const Handler = @import("Handler.zig");
 
 var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
 var debug_allocator = std.heap.DebugAllocator(.{}).init;
@@ -26,7 +26,7 @@ pub fn main() !void {
     var handler: Handler = try .init(allocator, env_reader, logger);
     defer handler.deinit();
 
-    const port = try env_reader.readKey(u16, "PORT") orelse 3000;
+    const port = try env_reader.readKey(u16, .{}, "PORT") orelse 3000;
     var server = try httpz.Server(*Handler).init(allocator, .{
         .address = "0.0.0.0",
         .port = port,

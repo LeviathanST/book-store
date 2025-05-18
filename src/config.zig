@@ -1,7 +1,7 @@
 pub const Database = struct {
-    db_host: []const u8,
-    db_port: u16,
-    db_database: []const u8,
-    db_username: []const u8,
-    db_password: []const u8,
+    host: []const u8,
+    port: u16,
+    database: []const u8,
+    username: []const u8,
+    password: []const u8,
 };
