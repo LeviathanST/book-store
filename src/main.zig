@@ -6,7 +6,6 @@ const router = @import("router.zig");
 const util = @import("util.zig");
 const Handler = @import("Handler.zig");
 
-var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
 var debug_allocator = std.heap.DebugAllocator(.{}).init;
 
 pub fn main() !void {
@@ -39,4 +38,8 @@ pub fn main() !void {
     try router.setup(*Handler, &server);
     try logger.info("Listening on {d}", .{port});
     try server.listen();
+}
+
+test {
+    std.testing.refAllDecls(@This());
 }
