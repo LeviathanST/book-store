@@ -32,9 +32,16 @@ pub fn build(b: *std.Build) !void {
         .target = target,
         .optimize = optimize,
     });
+    const datetime = b.dependency("datetime", .{
+        .target = target,
+        .optimize = optimize,
+    });
+    const zig_jwt = b.dependency("zig-jwt", .{});
     exe.root_module.addImport("httpz", httpz.module("httpz"));
     exe.root_module.addImport("pg", pg.module("pg"));
     exe.root_module.addImport("zenv", zenv.module("zenv"));
+    exe.root_module.addImport("datetime", datetime.module("datetime"));
+    exe.root_module.addImport("zig-jwt", zig_jwt.module("zig-jwt"));
 
     b.installArtifact(exe);
 }
