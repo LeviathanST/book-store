@@ -1,11 +1,72 @@
-@host=localhost
-@port=5005
+@host = localhost
+@port = 5005
 
-### Register success
+
+### Register failed with empty body
+
+POST http://{{host}}:{{port}}/register HTTP/1.0
+Content-Type: application/json
+
+### Register failed with missing fields 
+
 POST http://{{host}}:{{port}}/register HTTP/1.0
 Content-Type: application/json
 
 {
-    "email":"hehe",
-    "password":"hehe"
+  "email": "hehe"
 }
+
+### Register success
+
+POST http://{{host}}:{{port}}/register HTTP/1.0
+Content-Type: application/json
+
+{
+  "email": "hehe1",
+  "password": "hehe",
+  "first_name": "Hung",
+  "last_name": "Pham",
+  "dob": "2005-05-17"
+}
+
+### Login success
+
+POST http://{{host}}:{{port}}/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "hehe1",
+  "password": "hehe"
+}
+
+### Login failed with wrong passwrod
+
+POST http://{{host}}:{{port}}/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "hehe",
+  "password": "hehe1"
+}
+
+### Login failed with empty data
+
+POST http://{{host}}:{{port}}/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "hehe",
+  "password": ""
+}
+
+### Verify success
+
+POST http://{{host}}:{{port}}/verify HTTP/1.1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50X2lkIjozfQ.uVXulBATR1UapKWt-paPlhLN1y1Q9yW587swgPltkBc
+Content-Type: application/json
+
+### Verify failed
+
+POST http://{{host}}:{{port}}/verify HTTP/1.1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50X2lkIjozfQ.uVXulBATR1UapKWt-paPlhLN1y1Q9yW587swgPltkc
+Content-Type: application/json

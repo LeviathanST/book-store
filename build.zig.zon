@@ -13,8 +13,16 @@
             .hash = "pg-0.0.0-Wp_7gRD-BQCbDvJEahLsdoxUdlR7BsmvPnQyYdGyQzEE",
         },
         .zenv = .{
-            .url = "git+https://github.com/zig-space/zenv?ref=master#d3bb3f0d63a45cbcdfe7402519a6728afc935659",
-            .hash = "zenv-0.0.0-hX4COWYeAAAv3S_azE1F_8eQUGRAIaK83DdtQGoLV0X_",
+            .url = "git+https://github.com/zig-space/zenv?ref=master#b00ee934a058417475917ac5f8275af6894b2d16",
+            .hash = "zenv-0.0.0-hX4COQUuAAAdvLBXuB4c2qhKnVH7ZwSXu7hINqk1SDIp",
+        },
+        .datetime = .{
+            .url = "git+https://github.com/frmdstryr/zig-datetime.git?ref=master#b8dcd4948ac1dc29694a4d79794921121426981b",
+            .hash = "datetime-0.8.0-cJNXzPXXAQBatvf9tYfTS2FMKMKNGM7zJnxmetb6AWJy",
+        },
+        .@"zig-jwt" = .{
+            .url = "git+https://github.com/deatil/zig-jwt?ref=main#cfab265b25bd14dbff516c65bcf7f7714a9ff728",
+            .hash = "zig_jwt-1.1.1-w3q9SJ_xAwDLqbfse8eQPWtVZmicqB20PuqbC_TBttpv",
         },
     },
     .paths = .{

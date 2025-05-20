@@ -1,17 +1,6 @@
-pub const httpz = @import("httpz");
+pub const token = @import("util/token.zig");
+pub const validator = @import("util/validator.zig");
+pub const dto_parser = @import("util/dto_parser.zig");
+pub const datetime = @import("util/datetime.zig");
+
 pub const Logger = @import("util/Logger.zig");
-
-pub fn sendError(res: *httpz.Response, status_code: u16, message: []const u8) !void {
-    res.status = status_code;
-    try res.json(.{
-        .message = message,
-    }, .{});
-}
-
-pub fn sendSuccess(res: *httpz.Response, message: []const u8, data: anytype) !void {
-    res.status = 200;
-    try res.json(.{
-        .message = message,
-        .data = data,
-    }, .{});
-}

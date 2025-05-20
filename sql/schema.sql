@@ -28,12 +28,12 @@ CREATE TABLE IF NOT EXISTS book_category (
 );
 
 CREATE TABLE IF NOT EXISTS "user" (
-    user_id     SERIAL PRIMARY KEY,
+    id     SERIAL PRIMARY KEY,
     email       VARCHAR(255) NOT NULL UNIQUE,
     password    VARCHAR(255) NOT NULL,
-    first_name  VARCHAR(50),
-    last_name   VARCHAR(50),
-    dob         DATE,
+    first_name  VARCHAR(50) NOT NULL,
+    last_name   VARCHAR(50) NOT NULl,
+    dob         DATE NOT NULL,
     role        user_role NOT NULL DEFAULT 'Guest',
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS review (
     content     TEXT,
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (book_id) REFERENCES book(book_id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES "user"(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES "user"(id) ON DELETE CASCADE,
     CONSTRAINT unique_book_user_review UNIQUE (book_id, user_id)
 );
 
