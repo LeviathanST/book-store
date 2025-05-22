@@ -36,12 +36,14 @@ pub fn register(handler: *Handler, req: *httpz.Request, res: *httpz.Response) !v
 }
 
 fn registerInternal(handler: *Handler, data: RegisterDTO) !void {
-    const round = try handler.env_reader.readKey(u6, .{}, "ROUND_HASHING") orelse return Error.EmptyRoundHashing;
     var buf: [std.crypto.pwhash.bcrypt.hash_length * 2]u8 = undefined;
     const hash = try std.crypto.pwhash.bcrypt.strHash(
         data.password,
         .{
-            .params = .{ .rounds_log = round, .silently_truncate_password = false },
+            .params = .{
+                .rounds_log = handler.global_config.round_hashing,
+                .silently_truncate_password = false,
+            },
             .encoding = .crypt,
         },
         &buf,
