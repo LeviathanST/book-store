@@ -1,4 +1,7 @@
 const std = @import("std");
+const util = @import("../util.zig");
+
+const Role = @import("../constant.zig").Role;
 const Handler = @import("../Handler.zig");
 const User = @This();
 
@@ -15,12 +18,6 @@ dob: []const u8,
 role: Role,
 created_at: i64,
 updated_at: i64,
-
-pub const Role = enum {
-    Guest,
-    User,
-    Admin,
-};
 
 pub fn deinit(self: *User, allocator: std.mem.Allocator) void {
     inline for (@typeInfo(User).@"struct".fields) |field| {
@@ -49,7 +46,7 @@ pub fn insert(
         .{ email, password, first_name, last_name, dob },
     ) catch |err| {
         if (conn.err) |pg_err| {
-            try handler.logger.err("{s}", .{pg_err.message});
+            util.log.err("{s}", .{pg_err.message});
             if (pg_err.isUnique()) {
                 return InsertError.DuplicatedEmail;
             }
@@ -87,7 +84,7 @@ pub fn allocFindAByEmail(
         .{ .column_names = true },
     ) catch |err| {
         if (conn.err) |pg_err| {
-            try handler.logger.err("{s}", .{pg_err.message});
+            util.log.err("{s}", .{pg_err.message});
         }
         return err;
     } orelse return FindError.EmailNotFound;
@@ -110,6 +107,10 @@ pub fn allocFindAByEmail(
         const @"type" = @FieldType(User, prop);
         if (@"type" == []const u8 or @"type" == u8) {
             const value = try allocator.dupe(u8, row.getCol([]const u8, prop));
+            @field(user, prop) = value;
+        } else if (@"type" == Role) {
+            const raw = row.getCol([]const u8, prop);
+            const value = Role.fromSlice(raw);
             @field(user, prop) = value;
         } else {
             @field(user, prop) = row.getCol(@"type", prop);
