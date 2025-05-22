@@ -1,4 +1,4 @@
-CREATE TYPE user_role AS ENUM ('Guest', 'Registered User', 'Admin');
+CREATE TYPE user_role AS ENUM ('Guest', 'User', 'Admin');
 
 CREATE TABLE IF NOT EXISTS book (
     book_id      SERIAL PRIMARY KEY,
