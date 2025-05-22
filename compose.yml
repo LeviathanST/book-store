@@ -4,6 +4,7 @@ services:
       context: .
     environment:
       PORT: ${PORT}
+      CLIENT_URL: ${CLIENT_URL}
       ROUND_HASHING: ${ROUND_HASHING}
       SECRET: ${SECRET}
       DB_PORT: ${DB_PORT}
