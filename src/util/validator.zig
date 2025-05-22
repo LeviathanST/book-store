@@ -20,9 +20,16 @@ pub fn string(h: *Handler, comptime name: []const u8, s: []const u8) !void {
 }
 
 pub fn dob(h: *Handler, d: Date) !void {
-    const cmp = d.cmp(Date.now());
-    if (cmp != .lt) {
-        h.err = "Day of birth cannot be in the feature or present!";
-        return ValidationError.InvalidDob;
+    const current_date = Date.now();
+
+    if (d.cmp(current_date) != .lt) {
+        h.err = "Date of birth must be in the past";
+        return error.InvalidDob;
+    }
+
+    const years_diff = current_date.year - d.year;
+    if (years_diff < 0 or years_diff > 120) {
+        h.err = "Date of birth implies an invalid age (must be between 0 and 120 years)";
+        return error.InvalidDob;
     }
 }
