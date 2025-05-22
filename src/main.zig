@@ -2,6 +2,7 @@ const std = @import("std");
 const httpz = @import("httpz");
 const zenv = @import("zenv");
 
+const GlobalConfig = @import("config.zig").GlobalConfig;
 const router = @import("router.zig");
 const util = @import("util.zig");
 const Handler = @import("Handler.zig");
@@ -9,7 +10,6 @@ const Handler = @import("Handler.zig");
 var debug_allocator = std.heap.DebugAllocator(.{}).init;
 
 pub fn main() !void {
-    const logger = util.Logger.init(std.io.getStdOut().writer());
     const allocator, const is_debug = comptime switch (@import("builtin").mode) {
         .Debug, .ReleaseFast => .{ debug_allocator.allocator(), true },
         else => .{ std.heap.page_allocator, false },
@@ -22,13 +22,13 @@ pub fn main() !void {
     };
     const env_reader = try zenv.Reader.init(allocator, .TERM, .{});
     defer env_reader.deinit();
-    var handler: Handler = try .init(allocator, env_reader, logger);
+    const global_config = try env_reader.readStruct(GlobalConfig, .{});
+    var handler: Handler = try .init(allocator, env_reader, global_config);
     defer handler.deinit();
 
-    const port = try env_reader.readKey(u16, .{}, "PORT") orelse 3000;
     var server = try httpz.Server(*Handler).init(allocator, .{
         .address = "0.0.0.0",
-        .port = port,
+        .port = global_config.port,
     }, &handler);
     defer {
         server.stop();
@@ -36,7 +36,7 @@ pub fn main() !void {
     }
 
     try router.setup(*Handler, &server);
-    try logger.info("Listening on {d}", .{port});
+    util.log.info("Listening on {d}", .{global_config.port});
     try server.listen();
 }
 
