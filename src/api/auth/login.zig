@@ -13,11 +13,6 @@ pub const Error = error{WrongPassword} || User.FindError;
 const LoginDTO = struct {
     email: []const u8,
     password: []const u8,
-
-    pub fn validate(self: LoginDTO, handler: *Handler) !void {
-        try util.validator.string(handler, "Email", self.email);
-        try util.validator.string(handler, "Password", self.password);
-    }
 };
 
 pub fn login(handler: *Handler, req: *httpz.Request, res: *httpz.Response) !void {
