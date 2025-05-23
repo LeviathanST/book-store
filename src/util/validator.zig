@@ -21,11 +21,9 @@ pub const ISBNError = error{
 
 /// This is a validation wrapper where `value` will be validated by field type
 pub fn apply(comptime T: type, value: T, h: *Handler) !void {
-    inline for (std.meta.fields(T)) |field| {
+    inline for (@typeInfo(T).@"struct".fields) |field| {
         if (field.type == []const u8 or field.type == []u8) {
             try string(h, field.name, @field(value, field.name));
-        } else {
-            @compileError(std.fmt.comptimePrint("Unsupported type: {s}", .{@typeName(field.type)}));
         }
     }
     if (@hasField(T, "dob")) {
