@@ -1,3 +1,9 @@
+//! JWT module
+//!
+//! # Features
+//! + Generate.
+//! + Check `TokenClaims` for all encoded claims.
+//! + Verify.
 const std = @import("std");
 const jwt = @import("zig-jwt");
 

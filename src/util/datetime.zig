@@ -1,3 +1,9 @@
+//! This module is temporarily containing some
+//! to parse another type (usually a slice)
+//! into `Date` or `Datetime`
+//!
+//! # Features
+//! * convert slice into `Date` with format `"YYYY-MM-DD"`
 // TODO: Use `https://github.com/rockorager/zeit` instead
 const std = @import("std");
 const datetime = @import("datetime").datetime;
