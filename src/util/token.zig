@@ -13,6 +13,7 @@ pub const Error = error{ EmptySecret, GenerateFailed, OutOfMemory };
 pub const VerifyError = error{InvalidFormat} || jwt.Error;
 
 // TODO: Add refresh token and change name into TokenPair
+// VersionToken? Make token is expired
 pub const Token = struct {
     at: []const u8,
 };
