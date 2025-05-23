@@ -1,0 +1,18 @@
+@admin_token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50X2lkIjoxLCJyb2xlIjoiQWRtaW4ifQ.vK_NyezLxOOMet7k7Z9Tjts8E1VAnZL_IB1ZaaHoeMY
+@guest_token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50X2lkIjoyLCJyb2xlIjoiR3Vlc3QifQ.lkqEm-nzE-9n9GHPHT4WlOBLwvWempGa6M4hLUmlo_s
+@host = localhost
+@port = 5005
+
+
+### Update a book success
+
+PUT http://{{host}}:{{port}}/books/9780743273565 HTTP/1.1
+Authorization: Bearer {{admin_token}}
+Content-Type: application/json
+
+{
+  "new_title": "The Great Technology",
+  "new_description": "A classic novel about the American Dream",
+  "new_isbn": "9780743273565",
+  "new_author": "F. Scott Fitzgerald"
+}
