@@ -28,8 +28,7 @@ pub fn login(handler: *Handler, req: *httpz.Request, res: *httpz.Response) !void
 }
 
 fn loginInternal(allocator: std.mem.Allocator, handler: *Handler, data: LoginDTO) !struct { i32, constant.Role } {
-    const user = try User.allocFindAByEmail(allocator, handler, data.email, &.{ "id", "password", "role" });
-    defer user.deinit(allocator);
+    const user = try User.findAByEmail(allocator, handler, data.email, &.{ "id", "password", "role" });
     std.crypto.pwhash.bcrypt.strVerify(
         user.password,
         data.password,
