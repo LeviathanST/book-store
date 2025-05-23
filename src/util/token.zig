@@ -1,3 +1,9 @@
+//! JWT module
+//!
+//! # Features
+//! + Generate.
+//! + Check `TokenClaims` for all encoded claims.
+//! + Verify.
 const std = @import("std");
 const jwt = @import("zig-jwt");
 
@@ -7,6 +13,7 @@ pub const Error = error{ EmptySecret, GenerateFailed, OutOfMemory };
 pub const VerifyError = error{InvalidFormat} || jwt.Error;
 
 // TODO: Add refresh token and change name into TokenPair
+// VersionToken? Make token is expired
 pub const Token = struct {
     at: []const u8,
 };

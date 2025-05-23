@@ -15,16 +15,6 @@ pub const RegisterDTO = struct {
     first_name: []const u8,
     last_name: []const u8,
     dob: []const u8,
-
-    pub fn validate(self: RegisterDTO, handler: *Handler) !void {
-        try util.validator.string(handler, "Email", self.email);
-        try util.validator.string(handler, "Password", self.password);
-        try util.validator.string(handler, "First name", self.first_name);
-        try util.validator.string(handler, "Last name", self.last_name);
-        try util.validator.string(handler, "Day of birth", self.dob);
-        const date = try util.datetime.fromSlice(self.dob);
-        try util.validator.dob(handler, date);
-    }
 };
 
 pub fn register(handler: *Handler, req: *httpz.Request, res: *httpz.Response) !void {

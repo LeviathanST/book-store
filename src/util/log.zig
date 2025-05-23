@@ -1,3 +1,7 @@
+//! Using to logging with color:
+//! + err(): **RED**
+//! + info(): **GREEN**
+//! + warn(): **YELLOW**
 const std = @import("std");
 
 pub fn info(comptime fmt: []const u8, args: anytype) void {

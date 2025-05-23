@@ -1,8 +1,20 @@
-@host=localhost
-@port=5005
+@base_url = localhost:5005
+@host = localhost
+@port = 5005
+
 
 ### Ping
-GET http://{{host}}:{{port}}/ HTTP/1.1
+
+GET http://{{base_url}}/ HTTP/1.1
 
 ### Not found
-GET http://{{host}}:{{port}}/api HTTP/1.1
+
+GET http://{{base_url}}/api HTTP/1.1
+
+### Get all books
+
+GET http://{{base_url}}/books HTTP/1.1
+
+### Get a book by ISBN
+
+GET http://{{base_url}}/books/9780743273565 HTTP/1.1

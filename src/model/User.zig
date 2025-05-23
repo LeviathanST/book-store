@@ -55,13 +55,12 @@ pub fn insert(
     };
 }
 
-/// The caller must use `deinit()`.
-pub fn allocFindAByEmail(
+pub fn findAByEmail(
     allocator: std.mem.Allocator,
     handler: *Handler,
     email: []const u8,
     comptime props: []const []const u8,
-) !*User {
+) !User {
     if (props.len <= 0) @compileError("[Find User] Please specify props to query");
     const conn = try handler.pool.acquire();
     defer conn.release();
@@ -78,7 +77,7 @@ pub fn allocFindAByEmail(
     }
     try query_builder.appendSlice(" FROM \"user\" WHERE email = $1");
 
-    const row = conn.rowOpts(
+    var row = conn.rowOpts(
         query_builder.items,
         .{email},
         .{ .column_names = true },
@@ -88,21 +87,10 @@ pub fn allocFindAByEmail(
         }
         return err;
     } orelse return FindError.EmailNotFound;
+    defer row.deinit() catch unreachable;
 
-    var user = try allocator.create(User);
-    // Create default value here
-    // to avoid undefined memory of `create()`
-    user.* = .{
-        .id = 0,
-        .email = "",
-        .password = "",
-        .first_name = "",
-        .last_name = "",
-        .dob = "",
-        .role = Role.Guest,
-        .created_at = 0,
-        .updated_at = 0,
-    };
+    // SAFETY: assign for each field later
+    var user: User = undefined;
     inline for (props) |prop| {
         const @"type" = @FieldType(User, prop);
         if (@"type" == []const u8 or @"type" == u8) {
