@@ -1,6 +1,6 @@
 const httpz = @import("httpz");
 const api = @import("api.zig");
-const constant = @import("constant.zig");
+const Role = @import("constant.zig").Role;
 
 const Handler = @import("Handler.zig");
 
@@ -18,13 +18,25 @@ pub fn setup(comptime T: type, server: *httpz.Server(T)) !void {
     router.get("/", ping, .{});
     router.post("/register", api.registerFn, .{});
     router.post("/login", api.loginFn, .{});
-
-    // TODO: This route just for token verification testing,
-    // need to remove later
-    // TODO: use middleware for each route need auth verification
     router.post("/verify", api.verifyFn, .{
-        .data = &Handler.AuthRouteData{ .role = constant.Role.Guest },
+        .data = &Handler.AuthRouteData{ .role = Role.Guest },
         .dispatcher = Handler.authDispatch,
     });
+
+    router.post("/books", api.insertBookFn, .{
+        .data = &Handler.AuthRouteData{ .role = Role.Admin },
+        .dispatcher = Handler.authDispatch,
+    });
+    router.put("/books/:isbn", api.updateBookFn, .{
+        .data = &Handler.AuthRouteData{ .role = Role.Admin },
+        .dispatcher = Handler.authDispatch,
+    });
+    router.delete("/books/:isbn", api.deleteBookFn, .{
+        .data = &Handler.AuthRouteData{ .role = Role.Admin },
+        .dispatcher = Handler.authDispatch,
+    });
+    router.get("/books/:isbn", api.findBookByISBNFn, .{});
+    router.get("/books", api.findBooksFn, .{});
+
     return;
 }
