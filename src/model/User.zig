@@ -87,8 +87,9 @@ pub fn findAByEmail(
         }
         return err;
     } orelse return FindError.EmailNotFound;
-    defer row.deinit() catch {};
+    defer row.deinit() catch unreachable;
 
+    // SAFETY: assign for each field later
     var user: User = undefined;
     inline for (props) |prop| {
         const @"type" = @FieldType(User, prop);
