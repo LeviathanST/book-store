@@ -2,14 +2,14 @@
 const std = @import("std");
 const datetime = @import("datetime").datetime;
 
-pub const Error = error{ InvalidFormat, InvalidDate };
+pub const Error = error{ InvalidFormatDate, InvalidDate };
 
 // "2005-05-17"
 pub fn fromSlice(s: []const u8) Error!datetime.Date {
     var part = std.mem.splitScalar(u8, s, '-');
-    const year = std.fmt.parseInt(u32, part.first(), 10) catch return Error.InvalidFormat;
-    const month = std.fmt.parseInt(u32, part.next() orelse return Error.InvalidFormat, 10) catch return Error.InvalidFormat;
-    const day = std.fmt.parseInt(u32, part.next() orelse return Error.InvalidFormat, 10) catch return Error.InvalidFormat;
+    const year = std.fmt.parseInt(u32, part.first(), 10) catch return Error.InvalidFormatDate;
+    const month = std.fmt.parseInt(u32, part.next() orelse return Error.InvalidFormatDate, 10) catch return Error.InvalidFormatDate;
+    const day = std.fmt.parseInt(u32, part.next() orelse return Error.InvalidFormatDate, 10) catch return Error.InvalidFormatDate;
     return @errorCast(datetime.Date.create(year, month, day));
 }
 
