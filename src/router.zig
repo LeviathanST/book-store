@@ -23,20 +23,21 @@ pub fn setup(comptime T: type, server: *httpz.Server(T)) !void {
         .dispatcher = Handler.authDispatch,
     });
 
-    router.post("/books", api.insertBookFn, .{
+    var book_routes = router.group("/books", .{});
+    book_routes.post("/", api.insertBookFn, .{
         .data = &Handler.AuthRouteData{ .role = Role.Admin },
         .dispatcher = Handler.authDispatch,
     });
-    router.put("/books/:isbn", api.updateBookFn, .{
+    book_routes.put("/:isbn", api.updateBookFn, .{
         .data = &Handler.AuthRouteData{ .role = Role.Admin },
         .dispatcher = Handler.authDispatch,
     });
-    router.delete("/books/:isbn", api.deleteBookFn, .{
+    book_routes.delete("/:isbn", api.deleteBookFn, .{
         .data = &Handler.AuthRouteData{ .role = Role.Admin },
         .dispatcher = Handler.authDispatch,
     });
-    router.get("/books/:isbn", api.findBookByISBNFn, .{});
-    router.get("/books", api.findBooksFn, .{});
+    book_routes.get("/:isbn", api.findBookByISBNFn, .{});
+    book_routes.get("/", api.findBooksFn, .{});
 
     return;
 }
