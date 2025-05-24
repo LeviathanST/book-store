@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS book (
 );
 
 CREATE TABLE IF NOT EXISTS category (
-    category_id  SERIAL PRIMARY KEY,
+    id  SERIAL PRIMARY KEY,
     name         VARCHAR(100) NOT NULL UNIQUE,
     description  TEXT NOT NULL,
     created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS book_category (
     book_id          INTEGER NOT NULL,
     category_id      INTEGER NOT NULL,
     FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE CASCADE,
-    FOREIGN KEY (category_id) REFERENCES category(category_id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE CASCADE,
     CONSTRAINT unique_book_category UNIQUE (book_id, category_id)
 );
 
