@@ -160,7 +160,7 @@ pub fn updateByISBN(
     ) catch |err| {
         if (conn.err) |pg_err| {
             util.log.err("{s}", .{pg_err.message});
-            if (std.mem.eql(u8, pg_err.code, "23505")) {
+            if (pg_err.isUnique()) {
                 h.err = "New ISBN already exists";
                 return InsertError.DuplicatedISBN;
             }
