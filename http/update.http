@@ -11,8 +11,19 @@ Authorization: Bearer {{admin_token}}
 Content-Type: application/json
 
 {
-  "new_title": "The Great Technology",
-  "new_description": "A classic novel about the American Dream",
-  "new_isbn": "9780743273565",
-  "new_author": "F. Scott Fitzgerald"
+  "title": "The Great Technology",
+  "description": "A classic novel about the American Dream",
+  "isbn": "9780743273565",
+  "author": "F. Scott Fitzgerald"
+}
+
+### Update a category success
+
+PUT http://{{host}}:{{port}}/categories/Detector HTTP/1.1
+Authorization: Bearer {{admin_token}}
+Content-Type: application/json
+
+{
+  "name": "Romantic",
+  "description": "Like Sherlock Holmes"
 }

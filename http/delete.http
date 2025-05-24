@@ -21,3 +21,9 @@ Content-Type: application/json
 DELETE http://{{host}}:{{port}}/books/978074327356 HTTP/1.1
 Authorization: Bearer {{admin_token}}
 Content-Type: application/json
+
+### Delete a category success
+
+DELETE http://{{host}}:{{port}}/categories/Detective HTTP/1.1
+Authorization: Bearer {{admin_token}}
+Content-Type: application/json

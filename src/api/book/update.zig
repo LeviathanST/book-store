@@ -5,10 +5,10 @@ const Handler = @import("../../Handler.zig");
 const Book = @import("../../model.zig").Book;
 
 const UpdateDTO = struct {
-    new_isbn: []const u8,
-    new_title: []const u8,
-    new_description: []const u8,
-    new_author: []const u8,
+    isbn: []const u8,
+    title: []const u8,
+    description: []const u8,
+    author: []const u8,
 };
 
 pub fn updateByISBN(h: *Handler, req: *httpz.Request, res: *httpz.Response) !void {
@@ -18,10 +18,10 @@ pub fn updateByISBN(h: *Handler, req: *httpz.Request, res: *httpz.Response) !voi
     try Book.updateByISBN(
         h,
         isbn,
-        data.new_isbn,
-        data.new_title,
-        data.new_description,
-        data.new_author,
+        data.isbn,
+        data.title,
+        data.description,
+        data.author,
     );
     try response.sendSuccess(res, "Update succesful!", null);
 }

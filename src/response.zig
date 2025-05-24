@@ -24,6 +24,12 @@ pub fn sendError(res: *httpz.Response, err: anyerror, message: ?[]const u8) !voi
         api.LoginError.EmailNotFound => try send(res, 400, "User not found!", null),
         api.LoginError.WrongPassword => try send(res, 400, "Wrong password!", null),
 
+        api.InsertBookError.DuplicatedISBN => try send(res, 400, "ISBN input is existed!", null),
+        api.FindBookError.BookNotFound => try send(res, 400, "ISBN input is not existed!", null),
+
+        api.InsertCategoryError.DuplicatedCategory => try send(res, 400, "Category with name is existed!", null),
+        api.FindCategoryError.CategoryNotFound => try send(res, 400, "Category with name is not existed!", null),
+
         AuthError.EmptyToken => try send(res, 400, "Your token is empty!", null),
         AuthError.InvalidToken => try send(res, 400, "Your token is invalid!", null),
         AuthError.Unauthorized => try send(res, 401, "Not enough permission!", null),
@@ -33,9 +39,6 @@ pub fn sendError(res: *httpz.Response, err: anyerror, message: ?[]const u8) !voi
         TokenVerifyError.JWTVerifyFail,
         TokenVerifyError.InvalidFormat,
         => try send(res, 400, "Invaid token!", null),
-
-        api.InsertBookError.DuplicatedISBN => try send(res, 400, "ISBN input is existed!", null),
-        api.FindBookError.NotFound => try send(res, 400, "ISBN input is not existed!", null),
 
         DatetimeError.InvalidFormatDate => try send(res, 400, "Your input date is invalid format!", null),
         DatetimeError.InvalidDate => try send(res, 400, "Your input date is invalid!", null),
