@@ -3,8 +3,6 @@ const httpz = @import("httpz");
 const response = @import("../../response.zig");
 const Handler = @import("../../Handler.zig");
 
-pub const Error = error{ EmptyToken, InvalidFormat };
-
 pub fn verify(handler: *Handler, req: *httpz.Request, res: *httpz.Response) !void {
     const msg = try std.fmt.allocPrint(
         req.arena,

@@ -1,10 +1,10 @@
-pub const std = @import("std");
-pub const util = @import("../util.zig");
-pub const Handler = @import("../Handler.zig");
+const std = @import("std");
+const util = @import("../util.zig");
+const Handler = @import("../Handler.zig");
 
 pub const Book = @This();
 pub const InsertError = error{DuplicatedISBN};
-pub const FindError = error{NotFound};
+pub const FindError = error{BookNotFound};
 
 id: i32,
 title: []const u8,
@@ -106,7 +106,7 @@ pub fn findByISBN(h: *Handler, isbn: []const u8) !Book {
             util.log.err("{s}", .{pg_err.message});
         }
         return err;
-    } orelse return FindError.NotFound;
+    } orelse return FindError.BookNotFound;
     defer row.deinit() catch unreachable;
 
     const instance = try row.to(Book, .{});
@@ -128,8 +128,7 @@ pub fn deleteByISBN(h: *Handler, isbn: []const u8) !void {
         return err;
     };
     if (rows_affected == 0) {
-        h.err = "Book with specified ISBN not found";
-        return FindError.NotFound;
+        return FindError.BookNotFound;
     }
 }
 
@@ -171,6 +170,6 @@ pub fn updateByISBN(
 
     if (rows_affected == 0) {
         h.err = "Book with specified ISBN not found";
-        return FindError.NotFound;
+        return FindError.BookNotFound;
     }
 }
