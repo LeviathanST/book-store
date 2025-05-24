@@ -1,5 +1,4 @@
 const httpz = @import("httpz");
-const util = @import("../../util.zig");
 const response = @import("../../response.zig");
 pub const Category = @import("../../model.zig").Category;
 pub const Handler = @import("../../Handler.zig");

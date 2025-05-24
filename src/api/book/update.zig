@@ -9,6 +9,7 @@ const UpdateDTO = struct {
     title: []const u8,
     description: []const u8,
     author: []const u8,
+    category: []const u8,
 };
 
 pub fn updateByISBN(h: *Handler, req: *httpz.Request, res: *httpz.Response) !void {
@@ -22,6 +23,7 @@ pub fn updateByISBN(h: *Handler, req: *httpz.Request, res: *httpz.Response) !voi
         data.title,
         data.description,
         data.author,
+        data.category,
     );
     try response.sendSuccess(res, "Update succesful!", null);
 }

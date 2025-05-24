@@ -1,4 +1,4 @@
-const httpz = @import("httpz");
+const api = @import("../api.zig");
 const Handler = @import("../Handler.zig");
 pub const Role = @import("../constant.zig").Role;
 
@@ -18,7 +18,7 @@ const updateCategoryFn = updateCategory.update;
 pub const InsertCategoryError = insertCategory.Error;
 pub const FindCategoryError = findCategory.Error;
 
-pub fn group(router: *httpz.Router(Handler, Handler)) !void {
+pub fn group(router: *api.AppRouter) void {
     var category_routes = router.group("/categories", .{});
     category_routes.post("/", insertCategoryFn, .{
         .data = &Handler.AuthRouteData{ .role = Role.Admin },

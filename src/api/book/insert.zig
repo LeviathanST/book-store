@@ -11,6 +11,7 @@ const InsertDTO = struct {
     description: []const u8,
     isbn: []const u8,
     author: []const u8,
+    category: []const u8,
 };
 
 pub fn insert(handler: *Handler, req: *httpz.Request, res: *httpz.Response) !void {
@@ -20,5 +21,12 @@ pub fn insert(handler: *Handler, req: *httpz.Request, res: *httpz.Response) !voi
 }
 
 fn insertInternal(handler: *Handler, data: InsertDTO) !void {
-    try Book.insert(handler, data.title, data.description, data.isbn, data.author);
+    try Book.insert(
+        handler,
+        data.title,
+        data.description,
+        data.isbn,
+        data.author,
+        data.category,
+    );
 }

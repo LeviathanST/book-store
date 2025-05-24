@@ -19,6 +19,10 @@ GET http://{{base_url}}/books HTTP/1.1
 
 GET http://{{base_url}}/books/9780743273565 HTTP/1.1
 
+### Get books by category 
+
+GET http://{{base_url}}/books?category=Romantic HTTP/1.1
+
 ### Get categories by name
 
 GET http://{{base_url}}/categories/Detective HTTP/1.1
