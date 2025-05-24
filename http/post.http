@@ -83,7 +83,8 @@ Content-Type: application/json
   "title": "The Great Gatsby",
   "description": "A classic novel about the American Dream",
   "isbn": "9780743273565",
-  "author": "F. Scott Fitzgerald"
+  "author": "F. Scott Fitzgerald",
+  "category": "Romantic"
 }
 
 ### Add one more contains 'Great' keyword
@@ -96,7 +97,8 @@ Content-Type: application/json
   "title": "Great Expectations",
   "description": "A coming-of-age story of an orphan named Pip",
   "isbn": "9780141439563",
-  "author": "Charles Dickens"
+  "author": "Charles Dickens",
+  "category": "Detective"
 }
 
 ### Add book failed with contains hyphens
@@ -109,7 +111,8 @@ Content-Type: application/json
   "title": "The Great Gatsby",
   "description": "A classic novel about the American Dream",
   "isbn": "978-0-7432-7356-5",
-  "author": "F. Scott Fitzgerald"
+  "author": "F. Scott Fitzgerald",
+  "category": "Hehe"
 }
 
 ### Add category success

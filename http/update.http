@@ -14,7 +14,8 @@ Content-Type: application/json
   "title": "The Great Technology",
   "description": "A classic novel about the American Dream",
   "isbn": "9780743273565",
-  "author": "F. Scott Fitzgerald"
+  "author": "F. Scott Fitzgerald",
+  "category": "Detective"
 }
 
 ### Update a category success
