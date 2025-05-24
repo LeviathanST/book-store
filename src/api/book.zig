@@ -1,4 +1,4 @@
-const httpz = @import("httpz");
+const api = @import("../api.zig");
 const Handler = @import("../Handler.zig");
 const Role = @import("../constant.zig").Role;
 
@@ -18,7 +18,7 @@ const deleteBookFn = deleteBook.deleteByISBN;
 pub const FindBookError = findBook.Error;
 pub const InsertBookError = insertBook.Error;
 
-pub fn group(router: *httpz.Router(Handler, Handler)) void {
+pub fn group(router: *api.AppRouter) void {
     var book_routes = router.group("/books", .{});
     book_routes.post("/", insertBookFn, .{
         .data = &Handler.AuthRouteData{ .role = Role.Admin },
