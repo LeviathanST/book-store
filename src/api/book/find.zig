@@ -8,14 +8,23 @@ pub const Handler = @import("../../Handler.zig");
 
 pub const Error = Book.FindError;
 
-/// This route using query `title` to find all books matches the title.
+/// This route using http `query` to specific how books is taken.
+/// + **title**: get all books matches the title. *(e.g. ?title=Greate Book)*
+/// + **category**: get all bookes in the specified category. *(e.g. ?category=Romantic)*
 /// If not specified, it means get all books.
 pub fn find(handler: *Handler, req: *httpz.Request, res: *httpz.Response) !void {
+    const allocPrint = std.fmt.allocPrint;
     const query = try req.query();
     if (query.get("title")) |title| {
         const list = try findByTitleInternal(handler, req.arena, title);
         defer list.deinit();
-        try response.sendSuccess(res, "Get all books that match the name!", list.items[0..]);
+        const msg = try allocPrint(req.arena, "Get all books matches `{s}` in the title!", .{title});
+        try response.sendSuccess(res, msg, list.items[0..]);
+    } else if (query.get("category")) |category| {
+        const list = try Book.findByCategory(handler, req.arena, category);
+        defer list.deinit();
+        const msg = try allocPrint(req.arena, "Get all books in the {s} category!", .{category});
+        try response.sendSuccess(res, msg, list.items[0..]);
     } else {
         const list = try Book.findAll(handler, req.arena);
         defer list.deinit();
