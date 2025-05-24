@@ -169,7 +169,6 @@ pub fn updateByISBN(
     };
 
     if (rows_affected == 0) {
-        h.err = "Book with specified ISBN not found";
         return FindError.BookNotFound;
     }
 }

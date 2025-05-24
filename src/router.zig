@@ -39,5 +39,20 @@ pub fn setup(comptime T: type, server: *httpz.Server(T)) !void {
     book_routes.get("/:isbn", api.findBookByISBNFn, .{});
     book_routes.get("/", api.findBooksFn, .{});
 
+    var category_routes = router.group("/categories", .{});
+    category_routes.post("/", api.insertCategoryFn, .{
+        .data = &Handler.AuthRouteData{ .role = Role.Admin },
+        .dispatcher = Handler.authDispatch,
+    });
+    category_routes.delete("/:name", api.deleteCategoryFn, .{
+        .data = &Handler.AuthRouteData{ .role = Role.Admin },
+        .dispatcher = Handler.authDispatch,
+    });
+    category_routes.put("/:name", api.updateCategoryFn, .{
+        .data = &Handler.AuthRouteData{ .role = Role.Admin },
+        .dispatcher = Handler.authDispatch,
+    });
+    category_routes.get("/:name", api.findACategory, .{});
+    category_routes.get("/", api.findCategories, .{});
     return;
 }
