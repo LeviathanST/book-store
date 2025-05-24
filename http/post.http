@@ -111,3 +111,25 @@ Content-Type: application/json
   "isbn": "978-0-7432-7356-5",
   "author": "F. Scott Fitzgerald"
 }
+
+### Add category success
+
+POST http://{{host}}:{{port}}/categories HTTP/1.1
+Authorization: Bearer {{admin_token}}
+Content-Type: application/json
+
+{
+  "name": "Detective",
+  "description": "Like Sherlock Holmes"
+}
+
+### Add one more category success
+
+POST http://{{host}}:{{port}}/categories HTTP/1.1
+Authorization: Bearer {{admin_token}}
+Content-Type: application/json
+
+{
+  "name": "Detector",
+  "description": "Like Sherlock Holmes"
+}
