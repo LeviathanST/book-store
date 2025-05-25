@@ -56,7 +56,7 @@ pub fn sendError(res: *httpz.Response, err: anyerror, message: ?[]const u8) !voi
     }
 }
 
-/// A request send by this function always have `status code = 200`
+/// The response send by this function always have `status code = 200`
 pub fn sendSuccess(res: *httpz.Response, message: []const u8, data: anytype) !void {
     try send(res, 200, message, data);
 }
