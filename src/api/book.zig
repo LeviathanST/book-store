@@ -21,15 +21,15 @@ pub const InsertBookError = insertBook.Error;
 pub fn group(router: *api.AppRouter) void {
     var book_routes = router.group("/books", .{});
     book_routes.post("/", insertBookFn, .{
-        .data = &Handler.AuthRouteData{ .role = Role.Admin },
+        .data = &Handler.AuthRouteData{ .roles = &[_]Role{Role.Admin} },
         .dispatcher = Handler.authDispatch,
     });
     book_routes.put("/:isbn", updateBookFn, .{
-        .data = &Handler.AuthRouteData{ .role = Role.Admin },
+        .data = &Handler.AuthRouteData{ .roles = &[_]Role{Role.Admin} },
         .dispatcher = Handler.authDispatch,
     });
     book_routes.delete("/:isbn", deleteBookFn, .{
-        .data = &Handler.AuthRouteData{ .role = Role.Admin },
+        .data = &Handler.AuthRouteData{ .roles = &[_]Role{Role.Admin} },
         .dispatcher = Handler.authDispatch,
     });
     book_routes.get("/:isbn", findBookByISBNFn, .{});

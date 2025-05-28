@@ -21,15 +21,15 @@ pub const FindCategoryError = findCategory.Error;
 pub fn group(router: *api.AppRouter) void {
     var category_routes = router.group("/categories", .{});
     category_routes.post("/", insertCategoryFn, .{
-        .data = &Handler.AuthRouteData{ .role = Role.Admin },
+        .data = &Handler.AuthRouteData{ .roles = &[_]Role{Role.Admin} },
         .dispatcher = Handler.authDispatch,
     });
     category_routes.delete("/:name", deleteCategoryFn, .{
-        .data = &Handler.AuthRouteData{ .role = Role.Admin },
+        .data = &Handler.AuthRouteData{ .roles = &[_]Role{Role.Admin} },
         .dispatcher = Handler.authDispatch,
     });
     category_routes.put("/:name", updateCategoryFn, .{
-        .data = &Handler.AuthRouteData{ .role = Role.Admin },
+        .data = &Handler.AuthRouteData{ .roles = &[_]Role{Role.Admin} },
         .dispatcher = Handler.authDispatch,
     });
     category_routes.get("/:name", findACategory, .{});

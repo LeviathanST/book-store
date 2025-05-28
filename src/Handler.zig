@@ -107,8 +107,8 @@ pub fn dispatch(self: *Self, action: httpz.Action(*Self), req: *httpz.Request, r
 pub const AuthError = error{ EmptyToken, InvalidToken, Unauthorized, EmptyRequiredData };
 
 pub const AuthRouteData = struct {
-    /// Needed role
-    role: constant.Role,
+    /// Needed roles
+    roles: []const constant.Role,
 };
 
 pub fn authDispatch(self: *Self, action: httpz.Action(*Self), req: *httpz.Request, res: *httpz.Response) !void {
@@ -149,7 +149,7 @@ fn authDispatchInternal(
             split.next() orelse return AuthError.EmptyToken,
             self.global_config.secret,
         );
-        if (claims.role != data.role) return AuthError.Unauthorized;
+        if (!std.mem.containsAtLeastScalar(constant.Role, data.roles[0..], 1, claims.role)) return AuthError.Unauthorized;
         self.auth_data = .{
             .account_id = claims.account_id,
             .role = claims.role,
