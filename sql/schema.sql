@@ -40,15 +40,15 @@ CREATE TABLE IF NOT EXISTS "user" (
 );
 
 CREATE TABLE IF NOT EXISTS review (
-    review_id   SERIAL PRIMARY KEY,
+    id   SERIAL PRIMARY KEY,
     rate        INTEGER NOT NULL CHECK (rate >= 1 AND rate <= 5),
     book_id     INTEGER NOT NULL,
     user_id     INTEGER NOT NULL,
     content     TEXT NOT NULL,
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES "user"(id) ON DELETE CASCADE,
-    CONSTRAINT unique_book_user_review UNIQUE (book_id, user_id)
+    FOREIGN KEY (user_id) REFERENCES "user"(id) ON DELETE CASCADE
 );
 
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -71,5 +71,10 @@ CREATE OR REPLACE TRIGGER update_category_updated_at
 
 CREATE OR REPLACE TRIGGER update_user_updated_at
     BEFORE UPDATE ON "user"
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+CREATE OR REPLACE TRIGGER update_review_updated_at
+    BEFORE UPDATE ON review 
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
