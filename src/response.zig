@@ -30,6 +30,8 @@ pub fn sendError(res: *httpz.Response, err: anyerror, message: ?[]const u8) !voi
         api.category.InsertCategoryError.DuplicatedCategory => try send(res, 400, "Category with name is existed!", null),
         api.category.FindCategoryError.CategoryNotFound => try send(res, 400, "Category with name is not existed!", null),
 
+        api.review.FindError.ReviewNotFound => try send(res, 400, "Review is not existed!", null),
+
         AuthError.EmptyToken => try send(res, 400, "Your token is empty!", null),
         AuthError.InvalidToken => try send(res, 400, "Your token is invalid!", null),
         AuthError.Unauthorized => try send(res, 401, "Not enough permission!", null),

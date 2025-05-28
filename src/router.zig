@@ -19,11 +19,12 @@ pub fn setup(comptime T: type, server: *httpz.Server(T)) !void {
     router.post("/register", api.auth.registerFn, .{});
     router.post("/login", api.auth.loginFn, .{});
     router.post("/verify", api.auth.verifyFn, .{
-        .data = &Handler.AuthRouteData{ .role = Role.Guest },
+        .data = &Handler.AuthRouteData{ .roles = &[_]Role{Role.Guest} },
         .dispatcher = Handler.authDispatch,
     });
 
     api.book.group(router);
     api.category.group(router);
+    api.review.group(router);
     return;
 }

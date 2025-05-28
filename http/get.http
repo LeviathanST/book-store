@@ -30,3 +30,7 @@ GET http://{{base_url}}/categories/Detective HTTP/1.1
 ### Get all categories 
 
 GET http://{{base_url}}/categories HTTP/1.1
+
+### Get all reviews of a book
+
+GET http://{{base_url}}/reviews?isbn=9780141439563 HTTP/1.1

@@ -28,3 +28,13 @@ Content-Type: application/json
   "name": "Romantic",
   "description": "Like Sherlock Holmes"
 }
+
+### Update a review
+
+PUT http://{{host}}:{{port}}/reviews/2 HTTP/1.1
+Authorization: Bearer {{admin_token}}
+Content-Type: application/json
+
+{
+  "new_content": "Yesssssss, it's a good book!"
+}
